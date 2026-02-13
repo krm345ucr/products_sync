@@ -1,24 +1,72 @@
-# README
+# \# Products Sync (Rails + Google Sheets)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# 
 
-Things you may want to cover:
+# Bu proje Ruby on Rails kullanılarak geliştirilmiş basit bir ürün yönetim sistemidir.
 
-* Ruby version
+# 
 
-* System dependencies
+# Rails veritabanı ile Google Sheets arasında çift yönlü senkronizasyon sağlar.
 
-* Configuration
+# 
 
-* Database creation
+# \## Özellikler
 
-* Database initialization
+# 
 
-* How to run the test suite
+# \- Ürün CRUD (Create, Read, Update, Delete)
 
-* Services (job queues, cache servers, search engines, etc.)
+# \- Google Sheets ile otomatik senkronizasyon
 
-* Deployment instructions
+# \- Rails → Sheet push
 
-* ...
+# \- Rails → Sheet delete
+
+# \- Temel validasyonlar
+
+# \- Background job kullanımı
+
+# 
+
+# ---
+
+# 
+
+# \## Gereksinimler
+
+# 
+
+# \- Ruby 3.x
+
+# \- Rails 7.x
+
+# \- SQLite
+
+# \- Google Service Account
+
+# \- Google Sheets API aktif olmalı
+
+# 
+
+# ---
+
+# 
+
+# \## Kurulum
+
+# 
+
+# ```bash
+
+# git clone https://github.com/krm345ucr/products\_sync.git
+
+# cd products\_sync
+
+# bundle install
+
+# rails db:create
+
+# rails db:migrate
+
+
+
