@@ -1,0 +1,39 @@
+<div class="header">
+  <h1>Products</h1>
+
+  <div class="header-actions">
+    <%= button_to "Sync Sheet", sync_products_path, method: :post, class:"btn-secondary btn" %>
+    <%= link_to "New Product", new_product_path, class:"btn" %>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Category</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><strong><%= product.name %></strong></td>
+        <td><%= product.price %></td>
+        <td><%= product.stock %></td>
+        <td><%= product.category %></td>
+
+        <td>
+          <div class="actions">
+            <%= link_to "Show", product, class:"btn-secondary btn" %>
+            <%= link_to "Edit", edit_product_path(product), class:"btn-secondary btn" %>
+            <%= button_to "Delete", product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class:"btn-danger btn" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
