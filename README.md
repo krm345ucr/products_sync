@@ -1,72 +1,94 @@
-# \# Products Sync (Rails + Google Sheets)
+# Products Sync – Rails & Google Sheets Senkronizasyonu
 
-# 
+Bu proje Ruby on Rails kullanılarak geliştirilmiş bir ürün yönetim uygulamasıdır.  
+Uygulama Google Sheets ile **çift yönlü senkronizasyon** yapmaktadır.
 
-# Bu proje Ruby on Rails kullanılarak geliştirilmiş basit bir ürün yönetim sistemidir.
+Rails tarafında yapılan işlemler Sheet’e yansır, Sheet’te yapılan değişiklikler de Rails’e aktarılabilir.
 
-# 
+---
 
-# Rails veritabanı ile Google Sheets arasında çift yönlü senkronizasyon sağlar.
+## Özellikler
 
-# 
+### Ürün Yönetimi (Rails)
 
-# \## Özellikler
+Tam CRUD desteği:
 
-# 
+- Listeleme
+- Oluşturma
+- Güncelleme
+- Silme
 
-# \- Ürün CRUD (Create, Read, Update, Delete)
+Ürün alanları:
 
-# \- Google Sheets ile otomatik senkronizasyon
+- external_id (UUID – Sheet eşleşmesi için)
+- name
+- price
+- stock
+- category
 
-# \- Rails → Sheet push
+---
 
-# \- Rails → Sheet delete
+## Google Sheets Senkronizasyonu
 
-# \- Temel validasyonlar
+### Rails → Google Sheets (Otomatik)
 
-# \- Background job kullanımı
+Rails tarafında:
 
-# 
+- Ürün oluşturulursa → Sheet’e satır eklenir
+- Ürün güncellenirse → Sheet güncellenir
+- Ürün silinirse → Sheet’ten silinir
 
-# ---
+Bu işlemler **ActiveJob + Service pattern** ile arka planda çalışır.
 
-# 
+---
 
-# \## Gereksinimler
+### Google Sheets → Rails (Manuel)
 
-# 
+Sheet’te yapılan değişiklikleri Rails’e almak için:
 
-# \- Ruby 3.x
+```bash
+rails runner "GoogleSheetsSyncService.new.call"
 
-# \- Rails 7.x
+--KURULUM--
+1. Projeyi klonla
+git clone https://github.com/krm345ucr/products_sync.git
+cd products_sync
 
-# \- SQLite
+2. Gemleri yükle
+bundle install
 
-# \- Google Service Account
+3. Ortam değişkeni oluştur
 
-# \- Google Sheets API aktif olmalı
+Root dizinde .env oluştur:
 
-# 
+GOOGLE_SHEET_ID=sheet_id_buraya
 
-# ---
+4. Google Service Account
 
-# 
+Google Cloud’da proje oluştur
 
-# \## Kurulum
+Google Sheets API aktif et
 
-# 
+Service Account oluştur
 
-# ```bash
+JSON credential indir
 
-# git clone https://github.com/krm345ucr/products\_sync.git
+Dosyayı şuraya koy:
 
-# cd products\_sync
-
-# bundle install
-
-# rails db:create
-
-# rails db:migrate
+config/google_service_account.json
 
 
+Sheet’i service account email’i ile paylaş.
+
+5. Database
+rails db:create
+rails db:migrate
+
+6. Server çalıştır
+rails server
+
+
+Tarayıcı:
+
+http://localhost:3000/products
 
