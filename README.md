@@ -27,6 +27,83 @@ Tam CRUD desteği:
 - category
 
 ---
+### Service Pattern Kullanımı
+
+Google Sheets entegrasyonu controller veya model içine yazılmamıştır.
+
+Bunun yerine ayrı servis sınıfları oluşturulmuştur:
+
+GoogleSheetsPushService
+
+GoogleSheetsDeleteService
+
+GoogleSheetsSyncService
+
+Amaç:
+
+Controller’ların sade kalması
+
+Business logic’in izole edilmesi
+
+Kodun test edilebilir ve sürdürülebilir olması
+
+## Background Job Kullanımı
+
+Google API çağrıları zaman alabileceği için işlemler ActiveJob üzerinden arka planda çalıştırılmaktadır.
+
+Bu sayede:
+
+Kullanıcı arayüzü bloklanmaz
+
+Google tarafındaki gecikmeler Rails request lifecycle’ını etkilemez
+
+## Idempotent Senkronizasyon
+
+Her ürün unique bir external_id ile eşleştirilir.
+
+Bu sayede:
+
+Aynı senkronizasyon birden fazla çalıştırılsa bile duplicate kayıt oluşmaz
+
+Güncellemeler mevcut satırı overwrite eder
+
+Veri tutarlılığı korunur
+
+Sync işlemi tekrar tekrar çalıştırıldığında aynı sonucu üretir.
+
+## Transaction Kullanılmamasının Nedeni
+
+Google Sheets harici bir sistem olduğu için ActiveRecord transaction kapsamına alınmamıştır.
+
+Rails tarafındaki commit tamamlandıktan sonra Sheet senkronizasyonu yapılır.
+
+Bu bilinçli bir mimari tercihtir.
+
+## Validasyon ve Hata Yönetimi
+
+Rails modelinde temel validasyonlar mevcuttur:
+
+name ve category boş olamaz
+
+tamamen sayısal olamaz
+
+price negatif olamaz
+
+stock integer olmalıdır
+
+Geçersiz kayıtlar veritabanına yazılmaz.
+
+Sheet senkronizasyon hataları Rails loglarına düşer.
+
+## Güvenlik
+
+Hassas dosyalar gitignore kapsamındadır:
+
+.env
+
+config/google_service_account.json
+
+Repository içinde credential bulunmaz.
 
 ## Google Sheets Senkronizasyonu
 
